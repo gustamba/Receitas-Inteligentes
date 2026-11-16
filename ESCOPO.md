@@ -235,11 +235,11 @@ frontend/
     └── styles.css
 ```
 No Angular, cada funcionalidade terá suas próprias telas, componentes e serviços. Por exemplo:
-- recipes/pages/recipe-list — lista de receitas.
-- recipes/pages/recipe-form — cadastro e edição.
-- pantry/pages/pantry-list — estoque doméstico.
-- recommendations/pages/recommendation-list — sugestões de pratos.
-- core/services/api — configurações ou recursos compartilhados de acesso à API, caso sejam necessários.
+- `recipes/pages/recipe-list` — lista de receitas.
+- `recipes/pages/recipe-form` — cadastro e edição.
+- `pantry/pages/pantry-list` — estoque doméstico.
+- `recommendations/pages/recommendation-list` — sugestões de pratos.
+- `core/services/api` — configurações ou recursos compartilhados de acesso à API, caso sejam necessários.
 
 # Dependências necessárias
 ## Backend: Spring Initializr
@@ -265,9 +265,9 @@ Adicione estas dependências:
 |Flyway Migration|Versionar o esquema do banco|
 |Spring Boot Actuator|Monitoramento básico da aplicação|
 
-Para os testes, utilize JUnit 5 e Mockito, normalmente já disponíveis por meio do Spring Boot Starter Test. O suporte ao Testcontainers com PostgreSQL é uma boa evolução para testar com um banco real em contêiner.
+Para os testes, utilize `JUnit 5` e `Mockito`, normalmente já disponíveis por meio do `Spring Boot Starter Test`. O suporte ao `Testcontainers` com `PostgreSQL` é uma boa evolução para testar com um banco real em contêiner.
 
-O Flyway merece atenção: mantenha as alterações estruturais do banco em arquivos versionados, como V1__create_initial_schema.sql, dentro de src/main/resources/db/migration/. Isso ajuda a reproduzir o banco em qualquer ambiente.
+O Flyway merece atenção: mantenha as alterações estruturais do banco em arquivos versionados, como `V1__create_initial_schema.sql`, dentro de `src/main/resources/db/migration/`. Isso ajuda a reproduzir o banco em qualquer ambiente.
 
 ### Frontend: Angular
 
@@ -388,3 +388,84 @@ Cards de receitas com filtros e detalhes
 
 
 A regra mais importante desse fluxo é que o backend continua sendo responsável pela decisão. O Angular apenas apresenta o resultado, sem duplicar o algoritmo.
+
+# Como desenvolver sem se perder
+Eu dividiria o trabalho em etapas pequenas, com entregas funcionais. Assim, você sempre terá uma parte do projeto executável.
+
+## 01 Fundação do projeto
+
+Estimativa: 1–2 dias
+- Criar o repositório GitHub.
+- Configurar Java, Maven, Spring Boot e Angular.
+- Subir o PostgreSQL localmente, preferencialmente com Docker Compose.
+- Configurar a conexão entre backend e banco.
+
+
+## 02 API de receitas
+
+Estimativa: 3–5 dias
+- Modelar as entidades e relacionamentos.
+- Criar migrations e repositories.
+- Implementar CRUD, DTOs e validações.
+- Testar os endpoints com Postman ou Bruno.
+
+## 03 Estoque e recomendação
+
+Estimativa: 3–5 dias
+- Cadastrar e atualizar ingredientes.
+- Implementar comparação de quantidades.
+- Identificar ingredientes faltantes.
+- Escrever testes unitários para o algoritmo.
+
+## 04 Interface Angular
+
+Estimativa: 4–7 dias
+- Criar navegação e layout.
+- Construir formulários de receitas.
+- Implementar gerenciamento do estoque.
+- Criar tela de recomendações e detalhes.
+
+## 05 Finalização para portfólio
+
+Estimativa: 2–4 dias
+- Corrigir erros e melhorar a responsividade.
+- Documentar a arquitetura e as instruções de execução.
+- Adicionar dados de demonstração.
+- Preparar screenshots e testes essenciais.
+
+
+A estimativa total é de aproximadamente 13 a 23 dias úteis de desenvolvimento, considerando dedicação parcial, aprendizado durante a implementação e alguns ajustes. Se for seu primeiro projeto completo com Angular, pode levar mais tempo — e tudo bem.
+
+# Boas práticas que vão valorizar seu portfólio
+
+Não precisa implementar todas as práticas corporativas de uma vez, mas eu incluiria estas desde o início:
+- Validação: nome obrigatório, quantidades positivas, etapas válidas e IDs de ingredientes existentes.
+- Tratamento de erros: respostas HTTP consistentes, como 400, 404 e 409 quando apropriado.
+- Testes unitários: testar o serviço de recomendações para diferentes cenários de estoque.
+- Testes de integração: verificar endpoints e persistência no PostgreSQL.
+- Segurança: configurar CORS para os ambientes necessários, não expor credenciais e usar variáveis de ambiente.
+- Docker Compose: facilitar a execução do PostgreSQL e, posteriormente, de toda a aplicação.
+- Git: commits pequenos e descritivos, branches para funcionalidades e um histórico organizado.
+- Documentação: Swagger/OpenAPI para permitir que recrutadores e desenvolvedores testem sua API.
+Para a primeira versão, não implementaria autenticação JWT antes de concluir as funcionalidades centrais. Entretanto, se você quiser apresentar o projeto como uma aplicação com contas pessoais, autenticação e isolamento do estoque por usuário serão necessários antes de disponibilizá-lo publicamente.
+
+# O que fazer primeiro, na prática?
+
+Minha recomendação é começar pelo backend, porque ele define o modelo de dados e as regras que o Angular consumirá.
+
+Siga esta ordem:
+1. Criar o repositório receitas-inteligentes.
+2. Gerar o backend no Spring Initializr.
+3. Criar o Angular na pasta frontend.
+4. Configurar PostgreSQL e Flyway.
+5. Implementar primeiro as entidades Ingredient e Recipe.
+6. Criar o CRUD de receitas e testá-lo.
+7. Adicionar RecipeIngredient e RecipeStep.
+8. Implementar o estoque e o algoritmo de recomendações.
+9. Construir as telas Angular consumindo a API.
+10. Documentar, testar e publicar.
+
+A primeira meta concreta deve ser: conseguir cadastrar uma receita pela API, salvá-la no PostgreSQL e consultá-la novamente. Depois você avança para os relacionamentos e a lógica de recomendação.
+
+Esse projeto também será uma boa oportunidade para praticar Java, orientação a objetos, Spring Boot, JPA, SQL, APIs REST, TypeScript e arquitetura de aplicações — conhecimentos que você poderá demonstrar em entrevistas para vagas de desenvolvimento.
+
